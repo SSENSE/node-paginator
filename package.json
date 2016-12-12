@@ -1,5 +1,5 @@
 {
-  "name": "node-paginator",
+  "name": "@ssense/node-paginator",
   "version": "1.0.0",
   "description": "Paginator",
   "main": "./src/index.js",

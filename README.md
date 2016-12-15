@@ -17,53 +17,62 @@ Paginator library in NodeJS to facilitate REST pagination
 
 ### Installation
 
-    $ npm install --save  @ssense/node-paginator
+```bash
+npm install --save @ssense/node-paginator
+```
 
 ### Usage
 
-    import { Paginator } from '@ssense/node-paginator';
-    
-    const items = ['item1', 'item2', 'item3']; // from your DB returned collection...
-    const perPage = 1;
-    const currentPage = 2;
-    const paginator: Paginator = new Paginator(items, items.length, perPage, currentPage);
-    
-    // Transform paginator to object, use this as rour REST response
-    const paginated = paginator.transform();
-    
-    console.log(paginated);
-    /*
-    output
-    {
-        total: 3,
-        per_page: 1,
-        current_page: 2,
-        last_page: 3,
-        from: 2,
-        to: 4,
-        links:{
-            previous: '/?page=1&foo=bar#foobar',
-            current: '/?page=2&foo=bar#foobar',
-            next: '/?page=3&foo=bar#foobar'
-        },
-        data: [ 'item1', 'item2', 'item3' ]
-    }
-    */
+```js
+import { Paginator } from '@ssense/node-paginator';
 
+const items = ['item1', 'item2', 'item3']; // from your DB returned collection...
+const perPage = 1;
+const currentPage = 2;
+const paginator: Paginator = new Paginator(items, items.length, perPage, currentPage);
+
+// Transform paginator to object, use this as rour REST response
+const paginated = paginator.transform();
+
+console.log(paginated);
+/*
+output
+{
+    total: 3,
+    per_page: 1,
+    current_page: 2,
+    last_page: 3,
+    from: 2,
+    to: 4,
+    links:{
+        previous: '/?page=1&foo=bar#foobar',
+        current: '/?page=2&foo=bar#foobar',
+        next: '/?page=3&foo=bar#foobar'
+    },
+    data: [ 'item1', 'item2', 'item3' ]
+}
+*/
+```
 
 ### Tips and tricks
 #### Append queries string to URL
-    // Append one query string to URL
-    paginator.append('key', 'value');
-    
-    // Appends multiple queries to URL
-    paginator.appends({
-        foo: 'bar'
-    });
+
+```js
+// Append one query string to URL
+paginator.append('key', 'value');
+
+// Appends multiple queries to URL
+paginator.appends({
+    foo: 'bar'
+});
+```
 
 #### Add fragment to URL 
-    // Add foobar fragment to URL
-    paginator.fragment('foobar');
+
+```js
+// Add foobar fragment to URL
+paginator.fragment('foobar');
+```
 
 ### License
 

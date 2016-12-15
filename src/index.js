@@ -2,5 +2,6 @@
 function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
+__export(require("./PaginatorMeta"));
 __export(require("./Paginator"));
 //# sourceMappingURL=index.js.map

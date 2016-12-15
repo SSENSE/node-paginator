@@ -1,4 +1,5 @@
 import * as querystring from 'querystring';
+import {PaginatorMeta} from './PaginatorMeta';
 
 export type PaginatorInterface = {
     total: number;
@@ -47,47 +48,13 @@ export type PaginatorOptions = {
     pageName?: string;
 }
 
-export class Paginator {
-
-    /**
-     * Determine if there are more items in the data source.
-     */
-    protected _hasMore: boolean; // tslint:disable-line variable-name
-
+export class Paginator extends PaginatorMeta {
     /**
      * All of the items being paginated.
      *
      * @var object[]
      */
     protected _items: any[]; // tslint:disable-line variable-name
-
-    /**
-     * The total number of items before slicing.
-     *
-     * @var int
-     */
-    protected _total: number; // tslint:disable-line variable-name
-
-    /**
-     * The last available page.
-     *
-     * @var int
-     */
-    protected _lastPage: number; // tslint:disable-line variable-name
-
-    /**
-     * The number of items to be shown per page.
-     *
-     * @var int
-     */
-    protected _perPage: number; // tslint:disable-line variable-name
-
-    /**
-     * The current page being "viewed".
-     *
-     * @var int
-     */
-    protected _currentPage: number; // tslint:disable-line variable-name
 
     /**
      * Paginator options
@@ -125,11 +92,8 @@ export class Paginator {
      * @param options
      */
     constructor(items: any[], total: number, perPage: number, currentPage: number, options?: PaginatorOptions) {
+        super(total, perPage, currentPage);
         this._items = items;
-        this._total = total;
-        this._perPage = perPage;
-        this._lastPage = Math.ceil(total / perPage);
-        this._currentPage = this.setCurrentPage(currentPage);
         this._options = options || this._defaultOptions;
 
         this.setPageName(this._options.pageName || 'page');
@@ -208,111 +172,6 @@ export class Paginator {
     }
 
     /**
-     * Get the total number of items being paginated.
-     * @returns {number}
-     */
-    public total(): number {
-        return this._total;
-    }
-
-    /**
-     * Get the last page.
-     *
-     * @returns {number}
-     */
-    public lastPage(): number {
-        return this._lastPage;
-    }
-
-    /**
-     * Get the number of the first item in the slice.
-     *
-     * @returns {number}
-     */
-    public firstItem(): number { // number|void
-        if (this._items.length === 0) {
-            return;
-        }
-
-        return (this._currentPage - 1) * this._perPage + 1;
-    }
-
-    /**
-     * Get the number of the last item in the slice.
-     *
-     * @returns {number}
-     */
-    public lastItem(): number { // number|void
-        if (this._items.length === 0) {
-            return;
-        }
-        return this.firstItem() + this.count() - 1;
-    }
-
-    /**
-     * Get the number of items shown per page.
-     *
-     * @returns {number}
-     */
-    public perPage(): number {
-        return this._perPage;
-    }
-
-    /**
-     * Determine if the paginator is on the first page.
-     *
-     * @returns {boolean}
-     */
-    public onFirstPage(): boolean {
-        return this.currentPage() <= 1;
-    }
-
-    /**
-     * Get the current page.
-     *
-     * @returns {number}
-     */
-    public currentPage(): number {
-        return this._currentPage;
-    }
-
-    /**
-     * Determine if there are enough items to split into multiple pages.
-     *
-     * @returns {boolean}
-     */
-    public hasPages(): boolean {
-        return ! (this.currentPage() === 0 && ! this.hasMorePages());
-    }
-
-    /**
-     * Determine if there are more items in the data source.
-     *
-     * @returns {boolean}
-     */
-    public hasMorePages(): boolean {
-        return this.currentPage() < this.lastPage();
-    }
-
-    /**
-     * Determine if the list of items is empty or not.
-     *
-     * @returns {boolean}
-     */
-    public isEmpty(): boolean {
-        return this._items.length === 0;
-    }
-
-    /**
-     * Get the number of items for the current page.
-     *
-     * @returns {number}
-     */
-    public count(): number {
-        return this._items.length;
-    }
-
-    /**
      * Get the URL for a given page number.
      *
      * @param page
@@ -357,28 +216,6 @@ export class Paginator {
         if (this.lastPage() > this.currentPage()) {
             return this.url(this.currentPage() + 1);
         }
-    }
-
-    /**
-     * Get the current page for the request.
-     *
-     * @param currentPage
-     * @returns {number}
-     */
-    protected setCurrentPage(currentPage: number): number {
-        currentPage = currentPage || 1;
-
-        return this.isValidPageNumber(currentPage) ? currentPage : 1;
-    }
-
-    /**
-     * Determine if the given value is a valid page number.
-     *
-     * @param page
-     * @returns {boolean}
-     */
-    protected isValidPageNumber(page: number): boolean {
-        return page >= 1;
     }
 
     /**

@@ -15,6 +15,17 @@ describe('PaginatorMeta', () => {
 
     });
 
+    it('Can give correct firstItem/lastItem', () => {
+        const itemCount = 7;
+        const perPage = 2;
+        const currentPage = 2;
+        const paginator: PaginatorMeta = new PaginatorMeta(itemCount, perPage, currentPage);
+
+        expect(paginator.firstItem()).to.eq(2);
+        expect(paginator.lastItem()).to.eq(3);
+
+    });
+
     it('Can determinate if there are any page to show', () => {
         const itemCount = 4;
         const perPage = 3;

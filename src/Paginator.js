@@ -1,7 +1,9 @@
 "use strict";
 const querystring = require("querystring");
-class Paginator {
+const PaginatorMeta_1 = require("./PaginatorMeta");
+class Paginator extends PaginatorMeta_1.PaginatorMeta {
     constructor(items, total, perPage, currentPage, options) {
+        super(total, perPage, currentPage);
         this._defaultOptions = {
             path: '/',
             query: {},
@@ -10,10 +12,6 @@ class Paginator {
         };
         this._pageName = 'page';
         this._items = items;
-        this._total = total;
-        this._perPage = perPage;
-        this._lastPage = Math.ceil(total / perPage);
-        this._currentPage = this.setCurrentPage(currentPage);
         this._options = options || this._defaultOptions;
         this.setPageName(this._options.pageName || 'page');
     }
@@ -45,45 +43,6 @@ class Paginator {
     items() {
         return this._items;
     }
-    total() {
-        return this._total;
-    }
-    lastPage() {
-        return this._lastPage;
-    }
-    firstItem() {
-        if (this._items.length === 0) {
-            return;
-        }
-        return (this._currentPage - 1) * this._perPage + 1;
-    }
-    lastItem() {
-        if (this._items.length === 0) {
-            return;
-        }
-        return this.firstItem() + this.count() - 1;
-    }
-    perPage() {
-        return this._perPage;
-    }
-    onFirstPage() {
-        return this.currentPage() <= 1;
-    }
-    currentPage() {
-        return this._currentPage;
-    }
-    hasPages() {
-        return !(this.currentPage() === 0 && !this.hasMorePages());
-    }
-    hasMorePages() {
-        return this.currentPage() < this.lastPage();
-    }
-    isEmpty() {
-        return this._items.length === 0;
-    }
-    count() {
-        return this._items.length;
-    }
     url(page) {
         page = (page <= 0) ? 1 : page;
         let parameters = {
@@ -107,13 +66,6 @@ class Paginator {
         if (this.lastPage() > this.currentPage()) {
             return this.url(this.currentPage() + 1);
         }
-    }
-    setCurrentPage(currentPage) {
-        currentPage = currentPage || 1;
-        return this.isValidPageNumber(currentPage) ? currentPage : 1;
-    }
-    isValidPageNumber(page) {
-        return page >= 1;
     }
     getPageName() {
         return this._pageName;

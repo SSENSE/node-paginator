@@ -1,3 +1,4 @@
+import { PaginatorMeta } from './PaginatorMeta';
 export declare type PaginatorInterface = {
     total: number;
     per_page: number;
@@ -19,13 +20,8 @@ export declare type PaginatorOptions = {
     fragment?: string;
     pageName?: string;
 };
-export declare class Paginator {
-    protected _hasMore: boolean;
+export declare class Paginator extends PaginatorMeta {
     protected _items: any[];
-    protected _total: number;
-    protected _lastPage: number;
-    protected _perPage: number;
-    protected _currentPage: number;
     protected _options: PaginatorOptions;
     protected _defaultOptions: PaginatorOptions;
     protected _pageName: string;
@@ -36,22 +32,9 @@ export declare class Paginator {
     fragment(fragment?: string): Paginator | string;
     protected buildFragment(): string;
     items(): any[];
-    total(): number;
-    lastPage(): number;
-    firstItem(): number;
-    lastItem(): number;
-    perPage(): number;
-    onFirstPage(): boolean;
-    currentPage(): number;
-    hasPages(): boolean;
-    hasMorePages(): boolean;
-    isEmpty(): boolean;
-    count(): number;
     url(page?: number): string;
     previousPageUrl(): string;
     nextPageUrl(): string;
-    protected setCurrentPage(currentPage: number): number;
-    protected isValidPageNumber(page: number): boolean;
     getPageName(): string;
     setPageName(name: string): Paginator;
     transform(): PaginatorInterface;

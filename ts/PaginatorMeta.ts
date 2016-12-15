@@ -74,20 +74,20 @@ export class PaginatorMeta {
     }
 
     /**
-     * Get the number of the first item in the slice.
+     * Get the position of the first item in the slice.
      *
      * @returns {number}
      */
     public firstItem(): number|void {
-        const position = (this._currentPage - 1) * this._perPage + 1;
-        if (position > this._total) {
+        const position = (this._currentPage - 1) * this._perPage;
+        if (position >= this._total) {
             return;
         }
         return position;
     }
 
     /**
-     * Get the number of the last item in the slice.
+     * Get the position of the last item in the slice.
      *
      * @returns {number}
      */
@@ -96,7 +96,7 @@ export class PaginatorMeta {
         if (firstItemPosition === undefined) {
             return;
         }
-        return (<number> firstItemPosition) + this.count() - 1;
+        return (<number> firstItemPosition) + this.perPage() - 1;
     }
 
     /**

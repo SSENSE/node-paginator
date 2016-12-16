@@ -12,3 +12,6 @@ tests/coverage
 
 # Logs
 npm-debug.log*
+
+# Ignore compiled
+dist
